@@ -13,7 +13,7 @@ from pathlib import Path
 class dcmFile:
     def __init__(self, file: Path) -> None:
         self.filePath = Path(file)
-        self.header = pydicom.dcmread(self.filePath)
+        self.header = pydicom.dcmread(self.filePath, stop_before_pixels=True)
 
     def getFilePath(self) -> str:
         return str(self.filePath)
