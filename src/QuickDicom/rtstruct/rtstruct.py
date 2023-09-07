@@ -1,5 +1,6 @@
 
 import pydicom
+from pathlib import Path
 
 # Load the RTSTRUCT file
 # rtstruct = pydicom.dcmread("RTSTRUCT.dcm")
@@ -15,7 +16,7 @@ import pydicom
 # pydicom.dcmwrite("RTSTRUCT_modified.dcm", rtstruct)
 
 class RTStruct:
-    def __init__(self, file_name) -> None:
+    def __init__(self, file_name: Path) -> None:
         self.header = pydicom.dcmread(file_name)
         pass
         
@@ -32,7 +33,7 @@ class RTStruct:
     def keepROI(self):
         return self.header
         ...
-        
+
     def deleteROI(self):
         return self.header
         ...
