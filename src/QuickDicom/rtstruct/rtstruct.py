@@ -1,40 +1,57 @@
 
 import pydicom
-from pathlib import Path
 
-# Load the RTSTRUCT file
-# rtstruct = pydicom.dcmread("RTSTRUCT.dcm")
-
-# # Find the index of the first ROI
-# roi_index = 0
-
-# # Delete the item at that index from both sequences
 # del rtstruct.ROIContourSequence[roi_index]
 # del rtstruct.RTROIObservationsSequence[roi_index]
 
-# # Save the modified RTSTRUCT file
-# pydicom.dcmwrite("RTSTRUCT_modified.dcm", rtstruct)
-
 class RTStruct:
-    def __init__(self, file_name: Path) -> None:
+    def __init__(self, file_name) -> None:
         self.header = pydicom.dcmread(file_name)
-        pass
         
-    def renameROI(self,target_roi: str, new_name: str):
-        # Loop through the ROI sequence
+    def renameROI(self, target_roi: str, new_name: str):
         try:
             for roi in self.header.StructureSetROISequence:
                 # If the ROI name is target_roi rename it to new_name
                 if roi.ROIName.lower() == target_roi.lower():
                     roi.ROIName = new_name
         except:
-            print("ERROR")
+            raise ValueError('Error!')
 
-    def keepROI(self):
-        return self.header
-        ...
+    def getRoiId(self, target_roi):
+        try:
+             for roi in self.header.StructureSetROISequence:
+                if roi.ROIName == target_roi:
+                    return roi.ROINumber
+        except:
+            raise ValueError('Error!')
+        
+    def keepROI(self, target_roi):
+        try:
+            ROI_id = self.getRoiId(target_roi)
+            for ROIContourSequence in self.header.ROIContourSequence:
+                if ROIContourSequence.ReferencedROINumber != ROI_id:
+                    del ROIContourSequence
+            for ObservationsSequence in self.header.RTROIObservationsSequence:
+                if ObservationsSequence.ReferencedROINumber != ROI_id:
+                    del ObservationsSequence
+        except:
+            raise ValueError('Error!')
 
-    def deleteROI(self):
-        return self.header
-        ...
-
+    def deleteROI(self, target_roi):
+        try:
+            ROI_id = self.getRoiId(target_roi)
+            for ROIContourSequence in self.header.ROIContourSequence:
+                if ROIContourSequence.ReferencedROINumber == ROI_id:
+                    del ROIContourSequence
+            for ObservationsSequence in self.header.RTROIObservationsSequence:
+                if ObservationsSequence.ReferencedROINumber == ROI_id:
+                    del ObservationsSequence
+        except:
+            raise ValueError('Error!')
+                
+    def saveFile(self, file_name):
+        try:
+            pydicom.dcmwrite(file_name, self.header)
+        except:
+            raise ValueError('Error!')
+   
