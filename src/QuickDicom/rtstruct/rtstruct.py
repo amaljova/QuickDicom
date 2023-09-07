@@ -31,6 +31,9 @@ class RTStruct:
             for ROIContourSequence in self.header.ROIContourSequence:
                 if ROIContourSequence.ReferencedROINumber != ROI_id:
                     del ROIContourSequence
+        except:
+            raise ValueError("Error!")
+        try:
             for ObservationsSequence in self.header.RTROIObservationsSequence:
                 if ObservationsSequence.ReferencedROINumber != ROI_id:
                     del ObservationsSequence
@@ -43,6 +46,9 @@ class RTStruct:
             for ROIContourSequence in self.header.ROIContourSequence:
                 if ROIContourSequence.ReferencedROINumber == ROI_id:
                     del ROIContourSequence
+        except:
+            raise ValueError("Error!")
+        try:
             for ObservationsSequence in self.header.RTROIObservationsSequence:
                 if ObservationsSequence.ReferencedROINumber == ROI_id:
                     del ObservationsSequence
