@@ -1,5 +1,5 @@
 -e .
-# pandas
-# numpy
-# pydicom
-# tqdm
+pandas
+numpy
+pydicom
+tqdm
