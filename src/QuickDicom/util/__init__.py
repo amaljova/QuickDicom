@@ -9,9 +9,12 @@
 from pathlib import Path
 
 
-def getPathsToScan(base:Path, history = []) -> set:
-    '''Get all the new files'''
-    present = set(Path(base).rglob("*"))
+def getPathsToScan(target_dir:Path, history = []) -> set:
+    '''Get all the new files
+    Give target Directory and history, the files paths to be avoided.
+    If no history, all files in the target_dir will be returned.
+    '''
+    present = set(Path(target_dir).rglob("*"))
     history = set([Path(f_path) for f_path in history])
     return  present - history
 
