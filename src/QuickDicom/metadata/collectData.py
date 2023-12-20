@@ -8,9 +8,9 @@
 
 from .dicomInfo import dcmFile
 from QuickDicom import util
+from QuickDicom.logging import logger
 from pathlib import Path
 from tqdm import tqdm
-
 
 
 def getData(target_dir: Path, history = []) -> list:
@@ -23,7 +23,9 @@ def getData(target_dir: Path, history = []) -> list:
             try:
                 data_list.append(dcmFile(file).getAllInfo())
             except Exception as e:
-                print(e)
-    print("Done!")
+                # print(e)
+                logger.exception(e)
+    # print("Done!")
+    logger.info("Done!")
     return data_list
 
