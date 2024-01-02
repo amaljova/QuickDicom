@@ -7,6 +7,7 @@
 
 
 from pathlib import Path
+from QuickDicom.logging import logger
 
 
 def getPathsToScan(target_dir:Path, history = []) -> set:
@@ -14,8 +15,10 @@ def getPathsToScan(target_dir:Path, history = []) -> set:
     Give target Directory and history, the files paths to be avoided.
     If no history, all files in the target_dir will be returned.
     '''
+    logger.info("Getting File Paths ...")
     present = set(Path(target_dir).rglob("*"))
     history = set([Path(f_path) for f_path in history])
+    logger.info("Collected File Paths.")
     return  present - history
 
 

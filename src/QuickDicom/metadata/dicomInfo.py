@@ -188,32 +188,13 @@ class dcmFile:
             return None
 
  
-    def getPixelSpacingX(self) -> float:
-        # Pixel Spacing x
+    def getPixelSpacing(self) -> float:
+        # Pixel Spacing
         try:
-            PixelSpacingX = self.header[(0x28, 0x30)].value[0]
-            return float(PixelSpacingX)
+            PixelSpacing = self.header[(0x28, 0x30)].value[0]
+            return float(PixelSpacing)
         except:
             return None
-
-
-    def getPixelSpacingY(self) -> float:
-        # Pixel Spacing y
-        try:
-            PixelSpacingY = self.header[(0x28, 0x30)].value[1]
-            return float(PixelSpacingY)
-        except:
-            return None
-
-
-    def getFieldofViewShape(self):
-        # Field of View Shape
-        try:
-            FieldofViewShape = self.header[(0x18, 0x1147)].value
-            return FieldofViewShape
-        except:
-            return None
-
 
     def getImageType(self) -> list:
         # Image Type
@@ -224,45 +205,11 @@ class dcmFile:
             return None
 
 
-    def getSpiralPitchFactor(self) -> float:
-        # Spiral Pitch Factor
-        try:
-            SpiralPitchFactor = self.header[(0x18, 0x9311)].value
-            return float(SpiralPitchFactor)
-        except:
-            return None
-
-
-    def getFieldofViewDimension(self):
-        # Field of View Dimension
-        try:
-            FieldofViewDimension = self.header[(0x18, 0x1149)].value
-            return FieldofViewDimension
-        except:
-            return None
-
-
-    def getInstitutionName(self) -> str:
-        # InstitutionName
-        try:
-            InstitutionName = self.header[(0x08, 0x80)].value
-            return str(InstitutionName)
-        except:
-            return None
-
     def getDeviceSerialNumber(self) -> str:
         # DeviceSerialNumber
         try:
             DeviceSerialNumber = self.header[(0x18, 0x1000)].value
             return str(DeviceSerialNumber)
-        except:
-            return None
-
-    def getReferringPhysicianName(self) -> str:
-        # ReferringPhysicianName
-        try:
-            ReferringPhysicianName = self.header[(0x08, 0x90)].value
-            return str(ReferringPhysicianName)
         except:
             return None
 
@@ -329,14 +276,45 @@ class dcmFile:
             return int(InstanceNumber)
         except:
             return None
+        
+    def getBodyPart(self) -> int:
+        # BodyPart
+        try:
+            BodyPart = self.header[(0x18, 0x15)].value
+            return BodyPart
+        except:
+            return None
+        
+    def getBirthDate(self) -> int:
+        # BirthDate
+        try:
+            BirthDate = self.header[(0x10, 0x30)].value
+            return BirthDate
+        except:
+            return None
+        
+    def getDataCollectionDiameter(self) -> int:
+        # DataCollectionDiameter
+        try:
+            DataCollectionDiameter = self.header[(0x18, 0x90)].value
+            return DataCollectionDiameter
+        except:
+            return None
+        
+    def getReconstructionDiameter(self) -> int:
+        # ReconstructionDiameter
+        try:
+            ReconstructionDiameter = self.header[(0x18, 0x1100)].value
+            return ReconstructionDiameter
+        except:
+            return None
 
     def getAllInfo(self):
         info = {
             'PatID' : self.getPatId(),
             'PatName' : self.getPatName(),
             'PatientSex' : self.getPatientSex(),
-            'InstitutionName' : self.getInstitutionName(),
-            'ReferringPhysicianName' : self.getReferringPhysicianName(),
+            'Birthdate': self.getBirthDate(),
             'StudyID' : self.getStudyID(),
             'StudyInstanceUID' : self.getStudyInstanceUID(),
             'StudyDescription' : self.getStudyDescription(),
@@ -348,31 +326,54 @@ class dcmFile:
             'SeriesDate' : self.getSeriesDate(),
             'SeriesTime' : self.getSeriesTime(),
             'Modality' : self.getModality(),
+            'SOPClassUID' : self.getSOPClassUID(),
+            'SOPInstanceUID' : self.getSOPInstanceUID(),
+            'BodyPart': self.getBodyPart(),
+            'DataCollectionDiameter': self.getDataCollectionDiameter(),
+            'ReconstructionDiameter': self.getReconstructionDiameter(),
             'Manufacturer' : self.getManufacturer(),
             'ManufacturersModelName' : self.getManufacturersModelName(),
             'DeviceSerialNumber' : self.getDeviceSerialNumber(),
             'ImageType' : self.getImageType(),
             'InstanceNumber' : self.getInstanceNumber(),
-            'StructureSetLabel' : self.getStructureSetLabel(),
-            'ReferencedSeriesUID' : self.getReferencedCTUID(),
-            'SOPClassUID' : self.getSOPClassUID(),
-            'SOPInstanceUID' : self.getSOPInstanceUID(),
             'SliceThickness' : self.getSliceThickness(),
-            'ROIs' : self.getROIs(),
+            'PixelSpacing' : self.getPixelSpacing(),
+            'ConvolutionKernel' : self.getConvolutionKernel(),
             'Exposure' : self.getExposure(),
             'Kvp' : self.getKvp(),
             'mA' : self.getmA(),
-            'ConvolutionKernel' : self.getConvolutionKernel(),
-            'PixelSpacingx' : self.getPixelSpacingX(),
-            'PixelSpacingy' : self.getPixelSpacingY(),
-            'FieldofViewShape' : self.getFieldofViewShape(),
-            'SpiralPitchFactor' : self.getSpiralPitchFactor(),
-            'FieldofViewDimension' : self.getFieldofViewDimension(),
+            'StructureSetLabel' : self.getStructureSetLabel(),
+            'ReferencedSeriesUID' : self.getReferencedCTUID(),
+            'ROIs' : self.getROIs(),
             'FilePath' : self.getFilePath(),
         }
         return info
     
-
+    def getRTSTRUCTInfo(self):
+        info = {
+            'PatID' : self.getPatId(),
+            'PatName' : self.getPatName(),
+            'PatientSex' : self.getPatientSex(),
+            'StudyID' : self.getStudyID(),
+            'StudyInstanceUID' : self.getStudyInstanceUID(),
+            'StudyDescription' : self.getStudyDescription(),
+            'StudyDate' : self.getStudyDate(),
+            'StudyTime' : self.getStudyTime(),
+            'SeriesInstanceUID' : self.getSeriesInstanceUID(),
+            'SeriesDescription' : self.getSeriesDescription(),
+            'SeriesNumber' : self.getSeriesNumber(),
+            'SeriesDate' : self.getSeriesDate(),
+            'SeriesTime' : self.getSeriesTime(),
+            'Modality' : self.getModality(),
+            'StructureSetLabel' : self.getStructureSetLabel(),
+            'ReferencedSeriesUID' : self.getReferencedCTUID(),
+            'SOPClassUID' : self.getSOPClassUID(),
+            'SOPInstanceUID' : self.getSOPInstanceUID(),
+            'ROIs' : self.getROIs(),
+            'FilePath' : self.getFilePath(),
+        }
+        return info
+    
     def getDcmDbPath(self):
         info = {
             'PatID' : self.getPatId(),
