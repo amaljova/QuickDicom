@@ -15,10 +15,10 @@ def getPathsToScan(target_dir:Path, history = []) -> set:
     Give target Directory and history, the files paths to be avoided.
     If no history, all files in the target_dir will be returned.
     '''
-    logger.info("Getting File Paths ...")
+    logger.info("Getting File Paths to scan ...")
     present = set(Path(target_dir).rglob("*"))
     history = set([Path(f_path) for f_path in history])
-    logger.info("Collected File Paths.")
+    logger.info("Collected File Paths to scan.")
     return  present - history
 
 

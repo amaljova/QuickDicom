@@ -18,7 +18,7 @@ def getData(target_dir: Path, history = []) -> list:
     (Not all metadata, but whatever have specified in the dicomInfo.py)'''
     data_list = []
     # for file in tqdm(Path(target_dir).rglob("*")):
-    for file in tqdm(util.getPathsToScan(target_dir, history), desc = "Collecting Metadata :"):
+    for file in tqdm(util.getPathsToScan(target_dir, history), desc = "Collecting Metadata"):
         if file.is_file():
             try:
                 data_list.append(dcmFile(file).getAllInfo())

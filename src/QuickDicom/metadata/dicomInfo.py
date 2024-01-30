@@ -309,7 +309,7 @@ class dcmFile:
         except:
             return None
 
-    def getAllInfo(self):
+    def getAllInfo(self) -> dict:
         info = {
             'PatID' : self.getPatId(),
             'PatName' : self.getPatName(),
