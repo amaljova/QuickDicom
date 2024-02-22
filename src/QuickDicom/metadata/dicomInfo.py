@@ -113,14 +113,9 @@ class dcmFile:
 
 
     def getReferencedCTUID(self) -> str:
+        #ReferenceSeriesUID of RTSTRUCT files
         try:
-            if len(list(self.header[0x3006, 0x10])) > 0:
-                refFrameOfRef = (self.header[0x3006, 0x10])[0]
-                if len(list(refFrameOfRef[0x3006, 0x0012])) > 0:
-                    rtRefStudy = (refFrameOfRef[0x3006, 0x0012])[0]
-                    if len(list(rtRefStudy[0x3006, 0x14])) > 0:
-                        rtRefSerie = (rtRefStudy[0x3006, 0x14])[0]
-                        return str(rtRefSerie[0x20, 0xe].value)
+            return str(self.header[0x3006, 0x10][0][0x3006, 0x0012][0][0x3006, 0x14][0][0x20, 0xe].value)
         except:
             return None
 
